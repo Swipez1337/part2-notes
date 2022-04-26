@@ -21,8 +21,8 @@ const App = (props) => {
 
         const nameAlreadyExists = names.some(e => {
             if(e.content === nameObject.content) {
-                alert(nameObject.content + " has already been added to your phonebook")
-                console.log("true")
+                const templateStringAlertMsg = `${nameObject.content} has already been added to your phonebook`
+                alert(templateStringAlertMsg)
                 console.log(nameObject.content)
                 return true
             } else {
@@ -33,8 +33,6 @@ const App = (props) => {
         if (!nameAlreadyExists) {
             setNames(names.concat(nameObject))
             setNewName('')
-        } else {
-
         }
 
     }
