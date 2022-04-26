@@ -1,58 +1,109 @@
-import { useState } from 'react'
-import Name from './components/Name'
-import Note from "./components/Note";
+import {useState} from 'react'
+import User from './components/User'
 
 const App = (props) => {
 
-    const [names, setNames] = useState(props.names)
+    const [users, setUsers] = useState(props.names)
     const [newName, setNewName] = useState('')
+    const [newNumber, setNewNumber] = useState('')
     const [showAll, setShowAll] = useState(true)
+    const [showFilter, setFilterAll] = useState('')
 
 
-    const addName = (event) => {
+    /**
+     * Function to add entry to the phonebook
+     * @param event
+     */
+    const addEntry = (event) => {
         event.preventDefault()
         const nameObject = {
-            content: newName,
+            personName: newName,
+            personNumber: newNumber,
             date: new Date().toISOString(),
-            id: names.length + 1,
+            id: users.length + 1,
         }
 
-        console.log("Newname is: " + newName)
+        console.log("New name is: " + newName)
+        console.log("New number is: " + newNumber)
 
-        const nameAlreadyExists = names.some(e => {
-            if(e.content === nameObject.content) {
-                const templateStringAlertMsg = `${nameObject.content} has already been added to your phonebook`
+        //Check if the name already has been inserted, then alert message with template string
+        const nameAlreadyExists = users.some(e => {
+            if (e.personName === nameObject.personName) {
+                const templateStringAlertMsg = `${nameObject.personName} has already been added to your phonebook`
                 alert(templateStringAlertMsg)
-                console.log(nameObject.content)
+                console.log(nameObject.personName)
                 return true
             } else {
                 return false
             }
         })
 
-        if (!nameAlreadyExists) {
-            setNames(names.concat(nameObject))
+        if (!nameAlreadyExists) { //if entry does not already exist add entry
+            setUsers(users.concat(nameObject))
             setNewName('')
+            setNewNumber('')
         }
 
     }
 
+    /**
+     * Handler for user name change event
+     * @param event
+     */
     const handleNameChange = (event) => {
         console.log(event.target.value)
         setNewName(event.target.value)
     }
 
-    const namesToShow = showAll
-        ? names
-        : names.filter(name => name.important)
+    /**
+     * Handler for user phone number change event
+     * @param event
+     */
+    const handleNumberChange = (event) => {
+        setNewNumber(event.target.value)
+    }
+
+    /**
+     * Handler for the altering of the filter function. This is done by creating a regular expression and checking the name entries towards this.
+     * Inspiration for regex part: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+     * @param event
+     */
+    const handleFilterChange = (event) => {
+        const filterVal = event.target.value
+        const re = new RegExp(filterVal);
+        const filter = () => users.filter(user => user.personName.match(re))
+        //console.log(names)
+
+        setFilterAll(filterVal) //update input filter
+        setUsers(filter) //set the filter on the user entries
+
+        console.log("The filter value is: " + filterVal)
+
+        if (filterVal === "") { //filter empty
+            console.log("Filter value is empty")
+            setShowAll(showAll.filter(user => user.personName !== null)) //reset back to showing all users
+        }
+    }
 
     return (
         <div>
             <h2>Phonebook</h2>
-            <form onSubmit={addName}>
+            <form>
+                <div>
+                    Filter: <input value={showFilter}
+                                   onChange={handleFilterChange}/>
+                </div>
+            </form>
+
+            <h2>Add new entry</h2>
+            <form onSubmit={addEntry}>
                 <div>
                     name: <input value={newName}
-                                 onChange={handleNameChange} />
+                                 onChange={handleNameChange}/>
+                </div>
+                <div>
+                    number: <input value={newNumber}
+                                   onChange={handleNumberChange}/>
                 </div>
                 <div>
                     <button type="submit">add</button>
@@ -60,8 +111,8 @@ const App = (props) => {
             </form>
             <h2>Numbers</h2>
             <ul>
-                {namesToShow.map(name =>
-                    <Name key={name.id} name={name} />
+                {users.map(user =>
+                    <User key={user.id} user={user}/>
                 )}
             </ul>
         </div>
