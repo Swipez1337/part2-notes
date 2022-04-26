@@ -14,12 +14,29 @@ const App = (props) => {
         const nameObject = {
             content: newName,
             date: new Date().toISOString(),
-            important: Math.random() > 0.5,
             id: names.length + 1,
         }
 
-        setNames(names.concat(nameObject))
-        setNewName('')
+        console.log("Newname is: " + newName)
+
+        const nameAlreadyExists = names.some(e => {
+            if(e.content === nameObject.content) {
+                alert(nameObject.content + " has already been added to your phonebook")
+                console.log("true")
+                console.log(nameObject.content)
+                return true
+            } else {
+                return false
+            }
+        })
+
+        if (!nameAlreadyExists) {
+            setNames(names.concat(nameObject))
+            setNewName('')
+        } else {
+
+        }
+
     }
 
     const handleNameChange = (event) => {
