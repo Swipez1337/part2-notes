@@ -1,5 +1,8 @@
 import {useState} from 'react'
 import User from './components/User'
+import Filter from './components/Filter'
+import NewEntryName from "./components/NewEntryName";
+import NewEntryNumber from "./components/NewEntryNumber";
 
 const App = (props) => {
 
@@ -88,27 +91,22 @@ const App = (props) => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <form>
-                <div>
-                    Filter: <input value={showFilter}
-                                   onChange={handleFilterChange}/>
-                </div>
-            </form>
+
+            <Filter value={showFilter}
+                    onChange={handleFilterChange}/>
 
             <h2>Add new entry</h2>
+
             <form onSubmit={addEntry}>
-                <div>
-                    name: <input value={newName}
-                                 onChange={handleNameChange}/>
-                </div>
-                <div>
-                    number: <input value={newNumber}
-                                   onChange={handleNumberChange}/>
-                </div>
-                <div>
-                    <button type="submit">add</button>
-                </div>
+
+                <NewEntryName value={newName}
+                              onChange={handleNameChange}/>
+
+                <NewEntryNumber value={newNumber}
+                                onChange={handleNumberChange}/>
+
             </form>
+
             <h2>Numbers</h2>
             <ul>
                 {users.map(user =>

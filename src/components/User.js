@@ -1,4 +1,4 @@
-const User = ({ user }) => {
+const User = ({user}) => {
     return (
         <li>{user.personName} {user.personNumber} </li>
     )

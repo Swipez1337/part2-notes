@@ -9,5 +9,5 @@ I have taken that starting point from the code in branch "part2-3", found here h
 
 Clarification regarding exercise 2.8: 
 It is unclear whether the validation is supposed to include the number in regard to what triggers the alert message from exercise 2.7.
-I have interpreted that the combination of name and phone number should trigger the alert. 
+I have interpreted that only the name should trigger the alert. 
 
